@@ -1,5 +1,7 @@
 package org.toastedware.hackazon
 
+import java.math.BigDecimal
+
 enum class ProductCategory {
     FOOD,
     BOOK,
@@ -10,6 +12,6 @@ enum class ProductCategory {
 data class Product(
         val name: String,
         val category: ProductCategory,
-        val price: Double,
+        val price: BigDecimal,
         val imported: Boolean = false
 )

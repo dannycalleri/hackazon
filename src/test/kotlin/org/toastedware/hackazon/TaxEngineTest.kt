@@ -1,164 +1,162 @@
 package org.toastedware.hackazon
 
 import org.junit.Test
+import java.math.BigDecimal
 import kotlin.test.assertEquals
 
 class TaxEngineTest {
-    private val mixedNotImportedProducts = listOf(
-            Product(
-                    name = "book",
-                    category = ProductCategory.BOOK,
-                    price = 12.49
-            ),
-            Product(
-                    name = "music CD",
-                    category = ProductCategory.OTHER,
-                    price = 14.99
-            ),
-            Product(
-                    name = "chocolate bar",
-                    category = ProductCategory.FOOD,
-                    price = 0.85
-            )
-    )
-
-    private val mixedImportedProducts = listOf(
-            Product(
-                    name = "box of chocolates",
-                    category = ProductCategory.FOOD,
-                    price = 10.00,
-                    imported = true
-            ),
-            Product(
-                    name = "bottle of perfume",
-                    category = ProductCategory.OTHER,
-                    price = 47.5,
-                    imported = true
-            )
-    )
-
-    private val mixedProducts = listOf(
-            Product(
-                    name = "bottle of perfume",
-                    category = ProductCategory.OTHER,
-                    price = 27.99,
-                    imported = true
-            ),
-            Product(
-                    name = "bottle of perfume",
-                    category = ProductCategory.OTHER,
-                    price = 18.99
-            ),
-            Product(
-                    name = "packet of headache pills",
-                    category = ProductCategory.MEDICAL,
-                    price = 9.75
-            ),
-            Product(
-                    name = "box of chocolates",
-                    category = ProductCategory.FOOD,
-                    price = 11.25,
-                    imported = true
-            )
-    )
-
     @Test
     fun testMixedNotImportedProducts() {
+        val mixedNotImportedProducts = listOf(
+                Product(
+                        name = "book",
+                        category = ProductCategory.BOOK,
+                        price = BigDecimal("12.49")
+                ),
+                Product(
+                        name = "music CD",
+                        category = ProductCategory.OTHER,
+                        price = BigDecimal("14.99")
+                ),
+                Product(
+                        name = "chocolate bar",
+                        category = ProductCategory.FOOD,
+                        price = BigDecimal("0.85")
+                )
+        )
         val processedCart = TaxEngine.process(mixedNotImportedProducts)
         val expectedCart = Cart(
                 products = listOf(
                         Product(
                                 name = "book",
                                 category = ProductCategory.BOOK,
-                                price = 12.49
+                                price = BigDecimal("12.49")
                         ),
                         Product(
                                 name = "music CD",
                                 category = ProductCategory.OTHER,
-                                price = 14.99
+                                price = BigDecimal("16.49")
                         ),
                         Product(
                                 name = "chocolate bar",
                                 category = ProductCategory.FOOD,
-                                price = 0.85
+                                price = BigDecimal("0.85")
                         )
                 ),
-                salesTaxes = 1.50,
-                total = 29.83
+                salesTaxes = BigDecimal("1.50"),
+                total = BigDecimal("29.83")
         )
 
         assertEquals(
                 expectedCart,
                 processedCart,
-                "Tax Engine for mixed, not imported products conforms the specs! \uD83E\uDD18"
+                "Testing tax engine for mixed not imported products"
         )
     }
 
     @Test
     fun testMixedImportedProducts() {
+        val mixedImportedProducts = listOf(
+                Product(
+                        name = "box of chocolates",
+                        category = ProductCategory.FOOD,
+                        price = BigDecimal("10.00"),
+                        imported = true
+                ),
+                Product(
+                        name = "bottle of perfume",
+                        category = ProductCategory.OTHER,
+                        price = BigDecimal("47.5"),
+                        imported = true
+                )
+        )
         val processedCart = TaxEngine.process(mixedImportedProducts)
         val expectedCart = Cart(
                 products = listOf(
                         Product(
                                 name = "box of chocolates",
                                 category = ProductCategory.FOOD,
-                                price = 10.50,
+                                price = BigDecimal("10.50"),
                                 imported = true
                         ),
                         Product(
                                 name = "bottle of perfume",
                                 category = ProductCategory.OTHER,
-                                price = 54.65,
+                                price = BigDecimal("54.65"),
                                 imported = true
                         )
                 ),
-                salesTaxes = 7.65,
-                total = 65.15
+                salesTaxes = BigDecimal("7.65"),
+                total = BigDecimal("65.15")
         )
 
         assertEquals(
                 expectedCart,
                 processedCart,
-                "Tax Engine for mixed imported products conforms the specs! \uD83E\uDD18"
+                "Testing tax engine for mixed imported products"
         )
     }
 
     @Test
     fun testMixedProducts() {
+        val mixedProducts = listOf(
+                Product(
+                        name = "bottle of perfume",
+                        category = ProductCategory.OTHER,
+                        price = BigDecimal("27.99"),
+                        imported = true
+                ),
+                Product(
+                        name = "bottle of perfume",
+                        category = ProductCategory.OTHER,
+                        price = BigDecimal("18.99")
+                ),
+                Product(
+                        name = "packet of headache pills",
+                        category = ProductCategory.MEDICAL,
+                        price = BigDecimal("9.75")
+                ),
+                Product(
+                        name = "box of chocolates",
+                        category = ProductCategory.FOOD,
+                        price = BigDecimal("11.25"),
+                        imported = true
+                )
+        )
         val processedCart = TaxEngine.process(mixedProducts)
         val expectedCart = Cart(
                 products = listOf(
                         Product(
                                 name = "bottle of perfume",
                                 category = ProductCategory.OTHER,
-                                price = 32.19,
+                                price = BigDecimal("32.19"),
                                 imported = true
                         ),
                         Product(
                                 name = "bottle of perfume",
                                 category = ProductCategory.OTHER,
-                                price = 20.89
+                                price = BigDecimal("20.89")
                         ),
                         Product(
                                 name = "packet of headache pills",
                                 category = ProductCategory.MEDICAL,
-                                price = 9.75
+                                price = BigDecimal("9.75")
                         ),
                         Product(
                                 name = "box of chocolates",
                                 category = ProductCategory.FOOD,
-                                price = 11.85,
+                                price = BigDecimal("11.85"),
                                 imported = true
                         )
                 ),
-                salesTaxes = 6.70,
-                total = 74.68
+                salesTaxes = BigDecimal("6.70"),
+                total = BigDecimal("74.68")
         )
 
         assertEquals(
                 expectedCart,
                 processedCart,
-                "Tax Engine for mixed products conforms the specs! \uD83E\uDD18"
+                "Testing tax engine for mixed products"
         )
     }
 }
