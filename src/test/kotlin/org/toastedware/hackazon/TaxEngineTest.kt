@@ -163,4 +163,9 @@ class TaxEngineTest {
                 "Testing tax engine for mixed products"
         )
     }
+
+    @Test(expected = UnsupportedOperationException::class)
+    fun testTaxEngineWithEmptyList() {
+        TaxEngine.process(listOf())
+    }
 }

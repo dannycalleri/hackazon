@@ -12,6 +12,10 @@ object TaxEngine {
     )
 
     fun process(products: List<Product>): Cart {
+        if(products.isEmpty()) {
+            throw UnsupportedOperationException("Can't process an empty list of products")
+        }
+
         val processedProducts = products.map {
             Product(
                     name = it.name,
