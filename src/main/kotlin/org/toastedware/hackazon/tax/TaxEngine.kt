@@ -1,17 +1,23 @@
-package org.toastedware.hackazon
+package org.toastedware.hackazon.tax
 
+import org.toastedware.hackazon.model.Cart
+import org.toastedware.hackazon.model.Product
 import java.math.RoundingMode
 import java.math.BigDecimal
 
 object TaxEngine {
-    private val TAX_RATE = 10
-    private val IMPORT_TAX_RATE = 5
+    private val taxingStrategies = listOf(
+            imported(),
+            common()
+    )
 
     fun process(products: List<Product>): Cart {
         val processedProducts = products.map {
             Product(
                     name = it.name,
-                    price = it.price + calculateSaleTax(it) + calculateImportTax(it),
+                    price = it.price + taxingStrategies
+                            .map { strategy -> round(strategy(it)) }
+                            .reduce { acc, bigDecimal -> acc + bigDecimal },
                     category = it.category,
                     imported = it.imported
             )
@@ -28,24 +34,6 @@ object TaxEngine {
                 salesTaxes = salesTaxes,
                 total = total
         )
-    }
-
-    private fun calculateSaleTax(product: Product): BigDecimal {
-        var tax = BigDecimal("0.0")
-        if(product.category === ProductCategory.OTHER) {
-            tax = round(product.price.multiply(BigDecimal(TAX_RATE.toString())).divide(BigDecimal(100)))
-        }
-
-        return tax
-    }
-
-    private fun calculateImportTax(product: Product): BigDecimal {
-        var tax = BigDecimal("0.0")
-        if(product.imported) {
-            tax = round(product.price.multiply(BigDecimal(IMPORT_TAX_RATE.toString())).divide(BigDecimal(100)))
-        }
-
-        return tax
     }
 
     private fun round(value: BigDecimal): BigDecimal {

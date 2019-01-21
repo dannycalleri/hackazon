@@ -1,4 +1,4 @@
-package org.toastedware.hackazon
+package org.toastedware.hackazon.model
 
 import java.math.BigDecimal
 

@@ -1,5 +1,7 @@
 package org.toastedware.hackazon
 
+import org.toastedware.hackazon.model.Product
+import org.toastedware.hackazon.model.ProductCategory
 import java.math.BigDecimal
 
 fun main(args: Array<String>) {

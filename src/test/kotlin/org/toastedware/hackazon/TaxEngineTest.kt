@@ -1,6 +1,10 @@
 package org.toastedware.hackazon
 
 import org.junit.Test
+import org.toastedware.hackazon.model.Cart
+import org.toastedware.hackazon.model.Product
+import org.toastedware.hackazon.model.ProductCategory
+import org.toastedware.hackazon.tax.TaxEngine
 import java.math.BigDecimal
 import kotlin.test.assertEquals
 
